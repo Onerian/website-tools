@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Incentivi Funzioni Tecniche — art. 45 D.Lgs. 36/2023</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#1A3A5C;--navy-dk:#0F2540;--teal:#0D8F6A;--teal-lt:#E4F5EE;
+  --amber-lt:#FEF3C7;--amber:#D97706;
+  --bg:#F4F6FA;--surface:#FFF;--surface2:#F8FAFD;
+  --border:#D8E1F0;--border2:#B8CBE8;
+  --text:#1B2336;--muted:#5E6E88;--hint:#9BAFC8;
+  --highlight:#FDE68A;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6;padding:24px 16px 48px}
+.widget{max-width:860px;margin:0 auto}
+
+/* HEADER */
+.hdr{background:var(--navy);border-radius:14px;padding:28px 28px 22px;margin-bottom:20px;color:#fff;position:relative;overflow:hidden}
+.hdr::after{content:'';position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(13,143,106,.18);top:-50px;right:-40px;pointer-events:none}
+.hdr-eyebrow{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:8px}
+.hdr-title{font-size:22px;font-weight:600;line-height:1.3;margin-bottom:18px}
+.search-wrap{position:relative}
+.search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:.5;pointer-events:none}
+input[type=text]{width:100%;background:rgba(255,255,255,.93);border:1.5px solid transparent;border-radius:9px;padding:11px 14px 11px 38px;font-family:inherit;font-size:14px;color:var(--text);outline:none;transition:border-color .2s}
+input[type=text]:focus{border-color:var(--teal)}
+input[type=text]::placeholder{color:var(--hint)}
+
+/* SUMMARY CARDS */
+.summary{border:1.5px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:18px;background:var(--surface)}
+.summary-head{padding:8px 16px;background:var(--surface2);border-bottom:1.5px solid var(--border);font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--muted)}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}
+.card{padding:14px 16px;border-right:1px solid var(--border)}
+.card:last-child{border-right:none}
+.card-num{font-size:20px;font-weight:600;color:var(--hint);line-height:1;margin-bottom:6px}
+.card-text{font-size:12px;color:var(--muted);line-height:1.5}
+.card-text strong{color:var(--text);font-weight:500}
+
+/* FILTER BAR */
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.ftag{font-size:12px;font-weight:500;padding:5px 12px;border-radius:20px;cursor:pointer;border:1.5px solid var(--border);background:var(--surface);color:var(--muted);transition:all .15s;user-select:none}
+.ftag:hover{border-color:var(--border2);color:var(--text)}
+.ftag.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+
+/* SECTIONS */
+.sections{display:flex;flex-direction:column;gap:5px}
+.sec{background:var(--surface);border:1.5px solid var(--border);border-radius:10px;overflow:hidden;transition:border-color .15s}
+.sec:hover{border-color:var(--border2)}
+.sec.open{border-color:var(--teal)}
+.sec-hdr{display:flex;align-items:center;gap:12px;padding:13px 18px;cursor:pointer;user-select:none}
+.sec-num{font-size:13px;font-weight:600;color:var(--hint);min-width:22px}
+.sec-meta{flex:1}
+.sec-cat{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--hint);margin-bottom:1px}
+.sec-title{font-size:15px;font-weight:500;color:var(--text)}
+.chev{width:22px;height:22px;display:flex;align-items:center;justify-content:center;color:var(--hint);flex-shrink:0;transition:transform .28s, color .2s}
+.sec.open .chev{transform:rotate(180deg);color:var(--teal)}
+.sec-body{max-height:0;overflow:hidden;transition:max-height .38s ease}
+.sec.open .sec-body{max-height:2400px}
+.sec-inner{padding:2px 18px 18px 52px;font-size:14px;line-height:1.75;color:var(--muted)}
+.sec-inner p{margin-bottom:8px}
+.sec-inner ul{padding-left:18px;margin-bottom:10px}
+.sec-inner li{margin-bottom:3px}
+.sec-inner strong{color:var(--text);font-weight:500}
+.callout{border-left:2.5px solid var(--amber);border-radius:0;background:var(--amber-lt);padding:11px 14px;margin:12px 0 4px;font-size:13px;color:#78350F;line-height:1.6}
+.callout-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#92400E;margin-bottom:4px}
+
+/* STATES */
+.hidden{display:none!important}
+mark{background:var(--highlight);border-radius:2px;padding:0 2px}
+
+/* FOOTER */
+.footer{margin-top:18px;padding:13px 18px;background:var(--surface);border:1.5px solid var(--border);border-radius:10px;display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+.footer-refs{font-size:12px;color:var(--hint)}
+.footer-note{font-size:11px;color:var(--hint);margin-top:3px;font-style:italic}
+.no-results{text-align:center;padding:36px 20px;color:var(--hint);font-size:14px}
+
+@media(max-width:600px){
+  .hdr{padding:22px 18px 18px}
+  .hdr-title{font-size:18px}
+  .sec-inner{padding-left:18px}
+  .cards-grid{grid-template-columns:1fr 1fr}
+  .card{border-bottom:1px solid var(--border)}
+}
+</style>
+</head>
+<body>
+<div class="widget">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="hdr-eyebrow">Guida operativa · Codice dei contratti pubblici</div>
+    <div class="hdr-title">Incentivi per le funzioni tecniche</div>
+    <div class="search-wrap">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"><circle cx="6.5" cy="6.5" r="4.5"/><line x1="9.9" y1="9.9" x2="13" y2="13"/></svg>
+      <input type="text" id="searchInput" placeholder="Cerca nel manuale (es. DEC, BIM, concessioni, IRAP...)" autocomplete="off">
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="summary">
+    <div class="summary-head">In sintesi: 5 cose da ricordare</div>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-num">01</div>
+        <div class="card-text">Solo attività dell'<strong>Allegato I.10</strong> — elenco tassativo</div>
+      </div>
+      <div class="card">
+        <div class="card-num">02</div>
+        <div class="card-text">Servizi/forniture: necessaria <strong>nomina del DEC</strong> (&gt;€500k)</div>
+      </div>
+      <div class="card">
+        <div class="card-num">03</div>
+        <div class="card-text">Si applicano anche alle <strong>concessioni</strong></div>
+      </div>
+      <div class="card">
+        <div class="card-num">04</div>
+        <div class="card-text">Attività <strong>amministrative pure</strong>: escluse</div>
+      </div>
+      <div class="card">
+        <div class="card-num">05</div>
+        <div class="card-text">Liquidazione con <strong>principio di terzietà</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filters">
+    <span class="ftag on" data-f="all">Tutte le sezioni</span>
+    <span class="ftag" data-f="fondo">Fondo</span>
+    <span class="ftag" data-f="attivita">Attività</span>
+    <span class="ftag" data-f="soggetti">Soggetti</span>
+    <span class="ftag" data-f="contratti">Contratti</span>
+    <span class="ftag" data-f="limiti">Limiti e fiscale</span>
+    <span class="ftag" data-f="procedura">Procedura</span>
+  </div>
+
+  <!-- SECTIONS -->
+  <div class="sections" id="sectionsContainer">
+
+    <!-- 01 -->
+    <div class="sec" data-cat="fondo">
+      <div class="sec-hdr" onclick="toggleSec(this.closest('.sec'))">
+        <span class="sec-num">01</span>
+        <div class="sec-meta">
+          <div class="sec-cat">Fondo</div>
+          <div class="sec-title">Costituzione del fondo</div>
+        </div>
+        <div class="chev"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,5 7,9 11,5"/></svg></div>
+      </div>
+      <div class="sec-body">
+        <div class="sec-inner">
+          <p>Le amministrazioni possono destinare agli incentivi risorse fino al <strong>2% dell'importo a base di gara</strong>.</p>
+          <p>Le risorse sono ripartite tra:</p>
+          <ul>
+            <li><strong>80%</strong> al personale che svolge le funzioni tecniche incentivabili</li>
+            <li><strong>20%</strong> per beni, tecnologie, digitalizzazione, formazione specialistica, banche dati e strumenti innovativi (art. 45, comma 5)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 -->
+    <div class="sec" data-cat="attivita">
+      <div class="sec-hdr" onclick="toggleSec(this.closest('.sec'))">
+        <span class="sec-num">02</span>
+        <div class="sec-meta">
+          <div class="sec-cat">Attività</div>
+          <div class="sec-title">Attività incentivabili</div>
+        </div>
+        <div class="chev"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,5 7,9 11,5"/></svg></div>
+      </div>
+      <div class="sec-body">
+        <div class="sec-inner">
+          <p>Solo le attività dell'<strong>Allegato I.10 del D.Lgs. 36/2023</strong>. Elenco tassativo, non estendibile a funzioni ulteriori.</p>
+          <ul>
+            <li>RUP e collaboratori al RUP</li>
+            <li>Programmazione della spesa per investimenti</li>
+            <li>Redazione dei livelli progettuali</li>
+            <li>Verifica e validazione dei progetti</li>
+            <li>Predisposizione degli atti di gara</li>
+            <li>Direzione dei lavori (DL)</li>
+            <li>Direzione dell'esecuzione del contratto (DEC)</li>
+            <li>Coordinamento della sicurezza</li>
+            <li>Collaudo, verifica di conformità, certificato di regolare esecuzione</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 -->
+    <div class="sec" data-cat="contratti">
+      <div class="sec-hdr" onclick="toggleSec(this.closest('.sec'))">
+        <span class="sec-num">03</span>
+        <div class="sec-meta">
+          <div class="sec-cat">Contratti</div>
+          <div class="sec-title">Servizi e forniture</div>
+        </div>
+        <div class="chev"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,5 7,9 11,5"/></svg></div>
+      </div>
+      <div class="sec-body">
+        <div class="sec-inner">
+          <p>Riconoscibili solo se è nominato il <strong>Direttore dell'Esecuzione (DEC)</strong>, figura distinta dal RUP.</p>
+          <p>La nomina del DEC è richiesta:</p>
+          <ul>
+            <li>Importo <strong>superiore a €500.000</strong></li>
+            <li>Indipendentemente dall'importo, in caso di <strong>particolare complessità</strong> tecnica, tecnologica, organizzativa o gestionale</li>
+          </ul>
+          <div class="callout">
+            <div class="callout-title">Orientamento applicativo</div>
+            Art. 8 All. I.2 e art. 114, comma 8 del Codice collegano la nomina del DEC ai casi dell'art. 32 All. II.14. In presenza del DEC gli incentivi sono applicabili anche ai contratti di servizi e forniture.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04 -->
+    <div class="sec" data-cat="soggetti">
+      <div class="sec-hdr" onclick="toggleSec(this.closest('.sec'))">
+        <span class="sec-num">04</span>
+        <div class="sec-meta">
+          <div class="sec-cat">Soggetti</div>
+          <div class="sec-title">Soggetti beneficiari</div>
+        </div>
+        <div class="chev"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,5 7,9 11,5"/></svg></div>
+      </div>
+      <div class="sec-body">
+        <div class="sec-inner">
+          <p>Dipendenti che svolgono le attività dell'Allegato I.10 e siano <strong>formalmente individuati dall'amministrazione</strong>.</p>
+          <ul>
+            <li>RUP e collaboratori del RUP</li>
+            <li>Direttore dei lavori e Direttore dell'esecuzione (DEC)</li>
+            <li>Coordinatori della sicurezza</li>
+            <li>Collaudatori e verificatori della conformità</li>
+            <li>Ulteriori figure tecniche e amministrative coinvolte</li>
+          </ul>
+          <p>Le modalità di ripartizione sono definite dall'amministrazione nel proprio ordinamento.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 05 -->
+    <div class="sec" data-cat="contratti">
+      <div class="sec-hdr" onclick="toggleSec(this.closest('.sec'))">
+        <span class="sec-num">05</span>
+        <div class="sec-meta">
+          <div class="sec-cat">Contratti</div>
+          <div class="sec-title">Concessioni e Centrali Uniche di Committenza</div>
+        </div>
+        <div class="chev"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,5 7,9 11,5"/></svg></div>
+      </div>
+      <div class="sec-body">
+        <div class="sec-inner">
+          <p>Applicabili anche ai <strong>contratti di concessione</strong>. Base di calcolo: valore della concessione.</p>
+          <p>In caso di <strong>Centrale Unica di Committenza (CUC)</strong>, una quota può essere destinata al suo personale: massimo <strong>25% dell'80%</strong> (art. 45, comma 8).</p>
+          <div class="callout">
+            <div class="callout-title">MIT parere n. 2445/2024</div>
+            Il riferimento agli "enti concedenti" nell'art. 45 rende applicabile la disciplina degli incentivi anche alle concessioni.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 06 -->
+    <div class="sec" data-cat="attivita">
+      <div class="sec-hdr" onclick="toggleSec(this.closest('.sec'))">
+        <span class="sec-num">06</span>
+        <div class="sec-meta">
+          <div class="sec-cat">Attività</div>
+          <div class="sec-title">Attività e contratti esclusi</div>
+        </div>
+        <div class="chev"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,5 7,9 11,5"/></svg></div>
+      </div>
+      <div class="sec-body">
+        <div class="sec-inner">
+          <ul>
+            <li>Attività meramente <strong>contabili, finanziarie o amministrative generali</strong></li>
+            <li>Acquisizioni mediante <strong>sponsorizzazione</strong></li>
+            <li>Opere realizzate <strong>integralmente a spese del privato</strong></li>
+            <li>Lavori e servizi in <strong>amministrazione diretta</strong></li>
+            <li>Contratti <strong>esclusi dal Codice dei contratti pubblici</strong></li>
+            <li>Affidamenti a <strong>società in house</strong> dell'Ente</li>
+            <li>Contratti di <strong>somma urgenza</strong> (art. 140 del Codice)</li>
+          </ul>
+          <div class="callout">
+            <div class="callout-title">Corte dei Conti Liguria n. 77/2025/PAR</div>
+            Il regime incentivante ha carattere eccezionale e non può essere esteso ad attività di natura finanziaria, contabile o amministrativa non ricomprese nell'Allegato I.10.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 07 -->
+    <div class="sec" data-cat="limiti">
+      <div class="sec-hdr" onclick="toggleSec(this.closest('.sec'))">
+        <span class="sec-num">07</span>
+        <div class="sec-meta">
+          <div class="sec-cat">Limiti</div>
+          <div class="sec-title">Limiti individuali</div>
+        </div>
+        <div class="chev"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,5 7,9 11,5"/></svg></div>
+      </div>
+      <div class="sec-body">
+        <div class="sec-inner">
+          <p>Il totale percepito dal singolo dipendente non può superare il <strong>trattamento economico annuo lordo</strong>.</p>
+          <p>Con adozione del <strong>BIM</strong> (gestione informativa digitale delle costruzioni), il limite è incrementato del <strong>+15%</strong> (art. 45 del Codice).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 08 -->
+    <div class="sec" data-cat="procedura">
+      <div class="sec-hdr" onclick="toggleSec(this.closest('.sec'))">
+        <span class="sec-num">08</span>
+        <div class="sec-meta">
+          <div class="sec-cat">Procedura</div>
+          <div class="sec-title">Liquidazione degli incentivi</div>
+        </div>
+        <div class="chev"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,5 7,9 11,5"/></svg></div>
+      </div>
+      <div class="sec-body">
+        <div class="sec-inner">
+          <p>Subordinata all'accertamento dell'<strong>effettivo svolgimento delle attività</strong> e al raggiungimento dei risultati previsti.</p>
+          <div class="callout">
+            <div class="callout-title">Principio di terzietà — MIT parere n. 3761/2025</div>
+            Se il responsabile della liquidazione coincide con il beneficiario, la verifica deve essere affidata a un <strong>altro dirigente</strong> incaricato dall'amministrazione. Analoga esigenza richiamata dall'ANAC per il personale dirigenziale.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 09 -->
+    <div class="sec" data-cat="soggetti">
+      <div class="sec-hdr" onclick="toggleSec(this.closest('.sec'))">
+        <span class="sec-num">09</span>
+        <div class="sec-meta">
+          <div class="sec-cat">Soggetti</div>
+          <div class="sec-title">Personale dirigenziale</div>
+        </div>
+        <div class="chev"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,5 7,9 11,5"/></svg></div>
+      </div>
+      <div class="sec-body">
+        <div class="sec-inner">
+          <p>Gli incentivi costituiscono una <strong>deroga al principio di onnicomprensività</strong> del trattamento economico.</p>
+          <div class="callout">
+            <div class="callout-title">Comunicato Presidente ANAC — 7 maggio 2025 (Correttivo al Codice)</div>
+            Dopo il Correttivo, gli incentivi possono essere riconosciuti anche al <strong>personale dirigenziale</strong> che svolga le attività dell'Allegato I.10. L'attestazione deve essere effettuata da un <strong>dirigente diverso</strong> da quello beneficiario, per garantire imparzialità.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="sec" data-cat="limiti">
+      <div class="sec-hdr" onclick="toggleSec(this.closest('.sec'))">
+        <span class="sec-num">10</span>
+        <div class="sec-meta">
+          <div class="sec-cat">Fiscale</div>
+          <div class="sec-title">Regime fiscale e oneri riflessi</div>
+        </div>
+        <div class="chev"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,5 7,9 11,5"/></svg></div>
+      </div>
+      <div class="sec-body">
+        <div class="sec-inner">
+          <p>Le somme sono <strong>comprensive degli oneri previdenziali e assistenziali</strong> a carico dell'amministrazione (art. 45, comma 3).</p>
+          <div class="callout">
+            <div class="callout-title">Corte dei Conti Lombardia n. 103/2026</div>
+            La norma non richiama espressamente l'<strong>IRAP</strong> tra gli oneri del fondo incentivi. L'IRAP dovrebbe trovare autonoma copertura nel quadro economico dell'intervento, nelle somme a disposizione della stazione appaltante.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 11 -->
+    <div class="sec" data-cat="procedura">
+      <div class="sec-hdr" onclick="toggleSec(this.closest('.sec'))">
+        <span class="sec-num">11</span>
+        <div class="sec-meta">
+          <div class="sec-cat">Procedura</div>
+          <div class="sec-title">Regolamento interno</div>
+        </div>
+        <div class="chev"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,5 7,9 11,5"/></svg></div>
+      </div>
+      <div class="sec-body">
+        <div class="sec-inner">
+          <p>Il D.Lgs. 36/2023 <strong>non richiede più un regolamento formale</strong> come presupposto per l'erogazione degli incentivi.</p>
+          <p>Resta necessario un <strong>atto generale dell'amministrazione</strong> che definisca criteri di ripartizione e modalità di attribuzione, nel rispetto dell'art. 45 e della contrattazione collettiva applicabile.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- NO RESULTS -->
+  <div id="noResults" class="no-results hidden">Nessun risultato trovato per questa ricerca.</div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div>
+      <div class="footer-refs">Art. 45 D.Lgs. 36/2023 · Allegato I.10 · MIT pareri 2445/2024 e 3761/2025 · ANAC 07/05/2025</div>
+      <div class="footer-note">Il presente documento ha finalità informative e di supporto operativo.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function toggleSec(item) {
+  var wasOpen = item.classList.contains('open');
+  document.querySelectorAll('.sec.open').forEach(function(el){ el.classList.remove('open'); });
+  if (!wasOpen) item.classList.add('open');
+}
+
+document.querySelectorAll('.ftag').forEach(function(tag) {
+  tag.addEventListener('click', function() {
+    document.querySelectorAll('.ftag').forEach(function(t){ t.classList.remove('on'); });
+    tag.classList.add('on');
+    var f = tag.dataset.f;
+    document.getElementById('searchInput').value = '';
+    restoreAll();
+    document.querySelectorAll('.sec').forEach(function(item) {
+      var hide = f !== 'all' && item.dataset.cat !== f;
+      item.classList.toggle('hidden', hide);
+      if (hide) item.classList.remove('open');
+    });
+    document.getElementById('noResults').classList.add('hidden');
+  });
+});
+
+var originals = new Map();
+
+document.getElementById('searchInput').addEventListener('input', function() {
+  doSearch(this.value.trim());
+});
+
+function doSearch(q) {
+  var ql = q.toLowerCase();
+  restoreAll();
+  if (!ql) {
+    document.querySelectorAll('.sec').forEach(function(i){ i.classList.remove('hidden'); });
+    document.getElementById('noResults').classList.add('hidden');
+    document.querySelectorAll('.ftag').forEach(function(t){ t.classList.remove('on'); });
+    document.querySelector('.ftag[data-f="all"]').classList.add('on');
+    return;
+  }
+  document.querySelectorAll('.ftag').forEach(function(t){ t.classList.remove('on'); });
+  document.querySelector('.ftag[data-f="all"]').classList.add('on');
+  var count = 0;
+  document.querySelectorAll('.sec').forEach(function(item) {
+    var bd = item.querySelector('.sec-inner');
+    var st = item.querySelector('.sec-title');
+    var txt = (st.textContent + ' ' + bd.textContent).toLowerCase();
+    if (txt.indexOf(ql) >= 0) {
+      item.classList.remove('hidden');
+      item.classList.add('open');
+      count++;
+      if (!originals.has(item)) {
+        originals.set(item, { b: bd.innerHTML, s: st.innerHTML });
+      }
+      bd.innerHTML = hlHTML(originals.get(item).b, ql);
+      st.innerHTML = hlHTML(originals.get(item).s, ql);
+    } else {
+      item.classList.add('hidden');
+      item.classList.remove('open');
+    }
+  });
+  document.getElementById('noResults').classList.toggle('hidden', count > 0);
+}
+
+function restoreAll() {
+  originals.forEach(function(o, item) {
+    item.querySelector('.sec-inner').innerHTML = o.b;
+    item.querySelector('.sec-title').innerHTML = o.s;
+  });
+  originals.clear();
+}
+
+function hlHTML(html, q) {
+  var d = document.createElement('div');
+  d.innerHTML = html;
+  walkNodes(d, q);
+  return d.innerHTML;
+}
+
+function walkNodes(node, q) {
+  if (node.nodeType === 3) {
+    var t = node.textContent, tl = t.toLowerCase(), i = tl.indexOf(q);
+    if (i >= 0) {
+      var f = document.createDocumentFragment();
+      f.appendChild(document.createTextNode(t.slice(0, i)));
+      var m = document.createElement('mark');
+      m.textContent = t.slice(i, i + q.length);
+      f.appendChild(m);
+      f.appendChild(document.createTextNode(t.slice(i + q.length)));
+      node.parentNode.replaceChild(f, node);
+    }
+  } else if (node.nodeType === 1 && node.tagName !== 'MARK') {
+    Array.from(node.childNodes).forEach(function(c){ walkNodes(c, q); });
+  }
+}
+</script>
+</body>
+</html>
